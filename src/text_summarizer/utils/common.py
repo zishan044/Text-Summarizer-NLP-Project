@@ -40,18 +40,18 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
 
 @ensure_annotations
 def create_directories(
-    path_to_directories: List[Union[str, Path]],
+    path_to_directories: list,
     verbose: bool = True
-) -> List[Path]:
+) -> list:
     """
     Create one or more directories if they do not already exist.
 
     Args:
-        path_to_directories (List[Union[str, Path]]): A list of directory paths to create.
+        path_to_directories (list[str | Path]): A list of directory paths to create.
         verbose (bool, optional): If True, log each directory creation. Defaults to True.
 
     Returns:
-        List[Path]: A list of Path objects corresponding to the created directories.
+        list[Path]: A list of Path objects corresponding to the created directories.
     """
 
     created_paths = []
@@ -62,3 +62,18 @@ def create_directories(
         if verbose:
             logger.info(f"📁 Created directory at {path.resolve()}")
     return created_paths
+
+
+@ensure_annotations
+def get_size(path: Path) -> str:
+    """
+    Get the approximate size of a file in kilobytes.
+
+    Args:
+        path (Path): Path to the file.
+
+    Returns:
+        str: File size formatted as a string in kilobytes (e.g., "~ 42 KB").
+    """
+    size_in_kb = round(path.stat().st_size / 1024)
+    return f'~ {size_in_kb} KB'
